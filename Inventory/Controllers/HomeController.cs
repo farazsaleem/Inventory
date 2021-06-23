@@ -2,6 +2,7 @@
 using DAL;
 using Inventory.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -17,17 +18,25 @@ namespace Inventory.Controllers
       
         private IGenericRepository<tblInvertory> _ItblInvertoryRepository;
         private IGenericRepository<tblCategory> _ItblCategoryRepository;
+        public ApplicationDbContext _context;
         public HomeController(ILogger<HomeController> logger, IGenericRepository<tblInvertory> ItblInvertoryRepository,
-            IGenericRepository<tblCategory> ItblCategoryRepository)
+            IGenericRepository<tblCategory> ItblCategoryRepository, ApplicationDbContext context)
         {
             _logger = logger;
             this._ItblInvertoryRepository = ItblInvertoryRepository;
             _ItblCategoryRepository = ItblCategoryRepository;
+            _context = context;
         }
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<tblInvertory> Processor = await _ItblInvertoryRepository.GetAllAsync();
+            IEnumerable<tblInvertory> Processor = await _context.tblInvertories.Include(x => x.tblCategory).ToListAsync();
+            return View(Processor);
+        }
+
+        public async Task<IActionResult> Detail(int id)
+        {
+            tblInvertory Processor = await _context.tblInvertories.Include(x => x.tblCategory).Where(x=>x.Id==id).FirstOrDefaultAsync();
             return View(Processor);
         }
         public async Task<IActionResult> Create()
@@ -45,6 +54,7 @@ namespace Inventory.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             IEnumerable<tblCategory> list = await _ItblCategoryRepository.GetAllAsync();
@@ -52,6 +62,40 @@ namespace Inventory.Controllers
             ViewBag.list = list;
             return View(Inventory);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(tblInvertory tblInvertory)
+        {
+            await _ItblInvertoryRepository.Update(tblInvertory);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var Inventory = new tblInvertory()
+            {
+                Id=id,
+            };
+         
+             await _ItblInvertoryRepository.Remove(Inventory);
+            return RedirectToAction("Index");
+        }
+
+
+        public IActionResult CreateCategory()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateCategory(tblCategory tblCategory)
+        {
+            await _ItblCategoryRepository.Add(tblCategory);
+            return RedirectToAction("Index");
+        }
+
 
         public IActionResult Privacy()
         {

@@ -2,7 +2,7 @@
 
 namespace DAL.Migrations
 {
-    public partial class init : Migration
+    public partial class abc : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -32,7 +32,7 @@ namespace DAL.Migrations
                     UsbPorts = table.Column<int>(type: "int", nullable: false),
                     RamSlots = table.Column<int>(type: "int", nullable: false),
                     FromFactor = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Quantity = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
                     ScreenSize = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>

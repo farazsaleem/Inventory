@@ -15,7 +15,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Edit Account</li>
+                            <li class="breadcrumb-item active">Edit Inventory</li>
                         </ol>
                     </div>
                 </div>
@@ -26,14 +26,14 @@
                 <!-- SELECT2 EXAMPLE -->
                 <div class="card card-default">
                     <div class="card-header">
-                        <h3 class="card-title">Edit Account </h3>
+                        <h3 class="card-title">Edit Inventory </h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                             <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>
                         </div>
                     </div>
-                    <form method="post" asp-controller="Home" asp-action="Create" asp-antiforgery="true">
+                    <form method="post" asp-controller="Home" asp-action="Edit" asp-antiforgery="true">
                         @Html.AntiForgeryToken()
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <input asp-for="Id" type="hidden" class="form-control" />
@@ -99,7 +99,7 @@
 
                         </div>
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Create</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                             <a asp-action="Index" asp-controller="Home" style="cursor:pointer;color:white" class="btn btn-danger">Cancel</a>
                         </div>
                     </form>

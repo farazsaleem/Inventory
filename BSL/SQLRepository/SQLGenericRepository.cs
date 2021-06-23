@@ -53,6 +53,7 @@ namespace BSL.SQLRepository
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
+
             return await Context.Set<T>().ToListAsync();
         }
 
@@ -104,6 +105,9 @@ namespace BSL.SQLRepository
             GC.SuppressFinalize(true);
         }
 
-
+        public Task<IQueryable<T>> IncludeMultiple()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

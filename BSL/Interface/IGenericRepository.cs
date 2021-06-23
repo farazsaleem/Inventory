@@ -36,7 +36,8 @@ namespace BSL.Interface
         Task<int> CountAll();
         Task<int> CountWhere(Expression<Func<T, bool>> predicate);
 
-
+        ////for tbl inventory
+        Task<IQueryable<T>> IncludeMultiple();
 
 
     }

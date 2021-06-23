@@ -29,7 +29,7 @@ namespace DAL
         [Required]
         public string FromFactor { get; set; }
         [Required]
-        public string Quantity { get; set; }
+        public int Quantity { get; set; }
         [Required]
         public string ScreenSize { get; set; }
 
