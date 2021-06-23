@@ -44,6 +44,15 @@ namespace Inventory.Controllers
            await _ItblInvertoryRepository.Add(tblInvertory);
             return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            IEnumerable<tblCategory> list = await _ItblCategoryRepository.GetAllAsync();
+            var Inventory = await _ItblInvertoryRepository.GetById(id);
+            ViewBag.list = list;
+            return View(Inventory);
+        }
+
         public IActionResult Privacy()
         {
             return View();

@@ -1,0 +1,122 @@
+﻿@model DAL.tblInvertory
+
+@{ ViewData["Title"] = "Register";
+    var user = User.Identity.Name; }
+
+
+<div class="content-wrapper">
+    <div class="container">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Edit</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Edit Account</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <section class="content">
+            <div class="container-fluid">
+                <!-- SELECT2 EXAMPLE -->
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title">Edit Account </h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>
+                        </div>
+                    </div>
+                    <form method="post" asp-controller="Home" asp-action="Create" asp-antiforgery="true">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <input asp-for="Id" type="hidden" class="form-control" />
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12" data-select2-id="36">
+                                    <div class="form-group">
+                                        <label>Category</label>
+                                        <select class="select2 select2-hidden-accessible" id="CategoryID" name="CategoryID" data-placeholder="Main Account category" style="width: 100%;" data-select2-id="7" tabindex="-1" aria-hidden="true">
+                                            @foreach (var n in ViewBag.list)
+                                            {
+                                                <option value="@n.Id" selected="@(Model.tblCategory.Id==n.Id)">@n.CategoryName</option>
+}
+
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Computer Type</label>
+                                        <input type="text" asp-for="ComputerType" class="form-control" required placeholder="Enter Computer Type">
+                                        <span asp-validation-for="ComputerType" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Processor</label>
+                                        <input type="text" asp-for="Processor" class="form-control" required placeholder="Enter Processor">
+                                        <span asp-validation-for="Processor" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Brand</label>
+                                        <input type="text" asp-for="Brand" class="form-control" required placeholder="Enter Brand">
+                                        <span asp-validation-for="Brand" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Usb Ports</label>
+                                        <input type="number" asp-for="UsbPorts" class="form-control" required placeholder="Enter Usb Ports">
+                                        <span asp-validation-for="UsbPorts" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Ram Slots</label>
+                                        <input type="number" asp-for="RamSlots" class="form-control" required placeholder="Enter Ram Slots">
+                                        <span asp-validation-for="RamSlots" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>From Factor</label>
+                                        <input type="text" asp-for="FromFactor" class="form-control" required placeholder="Enter From Factor">
+                                        <span asp-validation-for="FromFactor" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Quantity</label>
+                                        <input type="text" asp-for="Quantity" class="form-control" required placeholder="Enter Quantity">
+                                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Screen Size</label>
+                                        <input type="text" asp-for="ScreenSize" class="form-control" required placeholder="Enter Screen Size">
+                                        <span asp-validation-for="ScreenSize" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <!-- /.col -->
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Create</button>
+                            <a asp-action="Index" asp-controller="Home" style="cursor:pointer;color:white" class="btn btn-danger">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card -->
+
+            </div><!-- /.container-fluid -->
+        </section>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+
+    <script src="~/plugins/select2/js/select2.full.min.js"></script>
+    <script>$('.select2').select2();
+        $('.select2').select2();</script>
+}
