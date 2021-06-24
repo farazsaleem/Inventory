@@ -28,7 +28,8 @@ namespace Inventory
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddScoped(typeof(IGenericRepository<>), typeof(SQLGenericRepository<>));
+            //services.AddScoped(typeof(IGenericRepository<>), typeof(SQLGenericRepository<>));
+            services.AddScoped<IInventoryService, InventoryService>();
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Context")));
         }
 

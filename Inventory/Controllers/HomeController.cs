@@ -14,34 +14,33 @@ namespace Inventory.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-      
-        private IGenericRepository<tblInvertory> _ItblInvertoryRepository;
-        private IGenericRepository<tblCategory> _ItblCategoryRepository;
-        public ApplicationDbContext _context;
-        public HomeController(ILogger<HomeController> logger, IGenericRepository<tblInvertory> ItblInvertoryRepository,
-            IGenericRepository<tblCategory> ItblCategoryRepository, ApplicationDbContext context)
+        //private readonly ILogger<HomeController> _logger;
+
+        //private IGenericRepository<tblInvertory> _ItblInvertoryRepository;
+        //private IGenericRepository<tblCategory> _ItblCategoryRepository;
+        //public ApplicationDbContext _context;
+        private readonly IInventoryService _inventoryService;
+        public HomeController(IInventoryService inventoryService)
         {
-            _logger = logger;
-            this._ItblInvertoryRepository = ItblInvertoryRepository;
-            _ItblCategoryRepository = ItblCategoryRepository;
-            _context = context;
+            _inventoryService = inventoryService;
         }
+
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<tblInvertory> Processor = await _context.tblInvertories.Include(x => x.tblCategory).ToListAsync();
-            return View(Processor);
+            List<tblInvertory> result = await _inventoryService.GetAllAsync();
+           // IEnumerable<tblInvertory> Processor = await _context.tblInvertories.Include(x => x.tblCategory).ToListAsync();
+            return View(result);
         }
 
         public async Task<IActionResult> Detail(int id)
         {
-            tblInvertory Processor = await _context.tblInvertories.Include(x => x.tblCategory).Where(x=>x.Id==id).FirstOrDefaultAsync();
-            return View(Processor);
+            tblInvertory result = await _inventoryService.Detail(id);
+            return View(result);
         }
         public async Task<IActionResult> Create()
         {
-            IEnumerable<tblCategory> list = await _ItblCategoryRepository.GetAllAsync();
+            List<tblCategory> list = await _inventoryService.GetAllCategoryAsync();
             ViewBag.list = list;
             return View();
         }
@@ -50,24 +49,26 @@ namespace Inventory.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(tblInvertory tblInvertory)
         {
-           await _ItblInvertoryRepository.Add(tblInvertory);
+            if(!ModelState.IsValid)
+                return View("Create", tblInvertory);
+            await _inventoryService.Add(tblInvertory);
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            IEnumerable<tblCategory> list = await _ItblCategoryRepository.GetAllAsync();
-            var Inventory = await _ItblInvertoryRepository.GetById(id);
+            List<tblCategory> list = await _inventoryService.GetAllCategoryAsync();
+            var Inventory = await _inventoryService.Detail(id);
             ViewBag.list = list;
-            return View(Inventory);
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(tblInvertory tblInvertory)
         {
-            await _ItblInvertoryRepository.Update(tblInvertory);
+            await _inventoryService.Update(tblInvertory);
             return RedirectToAction("Index");
         }
 
@@ -79,7 +80,7 @@ namespace Inventory.Controllers
                 Id=id,
             };
          
-             await _ItblInvertoryRepository.Remove(Inventory);
+             await _inventoryService.Remove(Inventory);
             return RedirectToAction("Index");
         }
 
@@ -92,7 +93,7 @@ namespace Inventory.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCategory(tblCategory tblCategory)
         {
-            await _ItblCategoryRepository.Add(tblCategory);
+            await _inventoryService.CreateCategory(tblCategory);
             return RedirectToAction("Index");
         }
 
