@@ -7,6 +7,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace InventoryTest
@@ -66,7 +67,7 @@ namespace InventoryTest
 
 
         [Fact]
-        public async void Create_ModelStateValid_CreateEmployeeCalledOnce()
+        public async void Create_ModelStateValid_CreateInventoryCalledOnce()
         {
             tblInvertory inventory = null;
             mock.Setup(r => r.Add(It.IsAny<tblInvertory>()))
@@ -94,6 +95,42 @@ namespace InventoryTest
             Assert.Equal(inventory.Brand, model.Brand);
         }
 
-        
+
+        [Fact]
+        public async void Create_ModelStateValid_CreateCategoryCalledOnce()
+        {
+            tblCategory category = null;
+            mock.Setup(r => r.CreateCategory(It.IsAny<tblCategory>()))
+                .Callback<tblCategory>(x => category = x);
+
+            var model = new tblCategory
+            {
+                CategoryName = "ABC",
+               
+            };
+            var controller = new HomeController(mock.Object);
+            await controller.CreateCategory(model);
+
+            mock.Verify(x => x.CreateCategory(It.IsAny<tblCategory>()), Times.Once);
+
+            Assert.Equal(category.CategoryName, model.CategoryName);
+        }
+
+        [Fact]
+        public async Task  DeleteItemTest()
+        {
+            var model = new tblInvertory
+            {
+                Id = 1,
+
+            };
+            mock.Setup(repo => repo.Remove(It.IsAny<tblInvertory>())).Returns(Task.CompletedTask);
+
+            var controller = new HomeController(mock.Object);
+            await controller.Delete(model.Id);
+
+            // Assert
+            mock.Verify(repo => repo.Remove(It.IsAny<tblInvertory>()), Times.Once);
+        }
     }
 }

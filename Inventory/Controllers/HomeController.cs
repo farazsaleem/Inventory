@@ -14,11 +14,7 @@ namespace Inventory.Controllers
 {
     public class HomeController : Controller
     {
-        //private readonly ILogger<HomeController> _logger;
-
-        //private IGenericRepository<tblInvertory> _ItblInvertoryRepository;
-        //private IGenericRepository<tblCategory> _ItblCategoryRepository;
-        //public ApplicationDbContext _context;
+       
         private readonly IInventoryService _inventoryService;
         public HomeController(IInventoryService inventoryService)
         {
@@ -29,7 +25,6 @@ namespace Inventory.Controllers
         public async Task<IActionResult> Index()
         {
             List<tblInvertory> result = await _inventoryService.GetAllAsync();
-           // IEnumerable<tblInvertory> Processor = await _context.tblInvertories.Include(x => x.tblCategory).ToListAsync();
             return View(result);
         }
 
