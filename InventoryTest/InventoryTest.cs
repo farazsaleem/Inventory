@@ -12,7 +12,7 @@ using Xunit;
 
 namespace InventoryTest
 {
-    public class Inventory
+    public class InventoryTest 
     {
         #region Property  
         public Mock<IInventoryService> mock = new Mock<IInventoryService>();
